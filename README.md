@@ -4,7 +4,7 @@
 ## Description
 The NIKLES Chatbot is an AI-powered knowledge-based chatbot application designed to provide information about NIKLES. It leverages natural language processing techniques to understand user queries and retrieve relevant information from a knowledge base.
 
-"Why?" (What Problem to solve)
+## "Why?" 
 The goal of the NIKLES Chatbot is to enhance customer experience by providing quick and accurate responses to inquiries about NIKLES products, history, technologies, luxury finishes, news, and more. By automating responses to common questions, the chatbot aims to streamline customer support and improve overall satisfaction.
 
 
@@ -14,7 +14,6 @@ The goal of the NIKLES Chatbot is to enhance customer experience by providing qu
         ├── data/
         │ ├── InformationFromWeb.pdf
         │ └── Warranty.pdf
-        |
         ├──- devmodules/
         │ ├── dataprocessor.py
         │ ├── get_from_chromaDB.py
@@ -22,7 +21,6 @@ The goal of the NIKLES Chatbot is to enhance customer experience by providing qu
         │ ├── scraper1.py
         │ ├── scraper2.py
         │ └── userlib.py
-        |
         ├── .env
         ├── .gitignore
         ├── app.py
@@ -49,11 +47,8 @@ The goal of the NIKLES Chatbot is to enhance customer experience by providing qu
     ```bash
     streamlit run app.py
     ```
-
 6. Open the frontend in your browser and ask your questions.
 
 ## Notes
-
-- Ensure you have ChromeDriver installed and it is compatible with your version of Chrome.
 - Adjust the `.env` file if needed to point to your database.
 
