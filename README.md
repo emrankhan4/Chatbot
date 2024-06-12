@@ -15,7 +15,6 @@ CHATBOT/
 │ ├── app.py
 │ └── main.py
 ├── chroma_db/
-│ 
 ├── data/
 │ ├── InformationFromWeb.pdf
 │ └── Warranty.pdf
