@@ -10,23 +10,26 @@ The goal of the NIKLES Chatbot is to enhance customer experience by providing qu
 
 ## Project Structure
 ```bash
-        CHATBOT/
-        ├── data/
-        │ ├── InformationFromWeb.pdf
-        │ └── Warranty.pdf
-        ├──- devmodules/
-        │ ├── dataprocessor.py
-        │ ├── get_from_chromaDB.py
-        │ ├── get_from_mysqlDB.py
-        │ ├── scraper1.py
-        │ ├── scraper2.py
-        │ └── userlib.py
-        ├── .env
-        ├── .gitignore
-        ├── app.py
-        ├── main.py
-        ├── requirements.txt
-        └── README.md
+CHATBOT/
+├── app/
+│ ├── app.py
+│ └── main.py
+├── chroma_db/
+│ 
+├── data/
+│ ├── InformationFromWeb.pdf
+│ └── Warranty.pdf
+├──- models/
+│ ├── dataprocessor.py
+│ ├── get_from_chromaDB.py
+│ ├── get_from_mysqlDB.py
+│ ├── scraper1.py
+│ ├── scraper2.py
+│ └── userlib.py
+├── .env
+├── .gitignore
+├── requirements.txt
+└── README.md
 ```
 
 ## Setup Instructions
