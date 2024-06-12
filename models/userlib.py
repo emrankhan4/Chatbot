@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../')
 import os
 from langchain.utils import cosine_similarity
 from langchain_core.output_parsers import StrOutputParser
@@ -9,8 +11,8 @@ from dotenv import load_dotenv
 from operator import itemgetter
 from pydantic import BaseModel
 from langchain_core.prompts import ChatPromptTemplate
-from devmodules.get_from_chromaDB import *
-from devmodules.get_from_mysqlDB import *
+from get_from_chromaDB import *
+from get_from_mysqlDB import *
 # get_general_chat_chain = get_from_chromaDB.get_general_chat_chain
 
 load_dotenv()
@@ -119,7 +121,7 @@ def Ai_response(user_question):
     x_class = classification_chain.invoke({"question":rephrased_question})
     x_class=str(x_class)
     
-    print(x_class)
+    print("CLASS: ",x_class)
     print("Rephrased question: ",rephrased_question)
     print(history.history)
 
@@ -131,6 +133,7 @@ def Ai_response(user_question):
         sql_response = run_query(sql_query)
         ai_response = natual_response_gen.invoke({ "question": rephrased_question, "query": sql_query,"response":sql_response}) 
     else:
+       
         gen_chat = get_general_chat_chain(history)
         ai_response = gen_chat.invoke({'question': user_question})
         

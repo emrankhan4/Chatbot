@@ -1,5 +1,9 @@
+# app/main.py
+import sys
+sys.path.insert(1,'C://Users//BS01216//Desktop//battleGround//ML//NLP_//Chatbot//models//')
+
 from fastapi import FastAPI
-from devmodules.userlib import *
+from userlib import *
 from pydantic import BaseModel
 app = FastAPI()
 class Query(BaseModel):
