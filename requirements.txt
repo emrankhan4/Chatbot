@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+streamlit
+requests
+pandas
+selenium
+webdriver-manager
+python-dotenv
+langchain
+openai
+langchain-core
+langchain-community
