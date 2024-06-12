@@ -53,4 +53,5 @@ CHATBOT/
 
 ## Notes
 - Adjust the `.env` file if needed to point to your database.
+- Make sure your mysql server is up and running and adjust the database 
 
