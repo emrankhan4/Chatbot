@@ -11,8 +11,10 @@ from dotenv import load_dotenv
 from operator import itemgetter
 from pydantic import BaseModel
 from langchain_core.prompts import ChatPromptTemplate
-from get_from_chromaDB import *
-from get_from_mysqlDB import *
+from get_from_mysqlDB import sql_response
+from models.get_from_chromaDB_and_general_Chat import c_response
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, AIMessage
 # get_general_chat_chain = get_from_chromaDB.get_general_chat_chain
 
 load_dotenv()
@@ -22,23 +24,7 @@ os.environ['OPENAPI_API_KEY'] = os.environ.get('OPENAI_API_KEY')
 class User(BaseModel):
     user: str
 
-class ChatHistory:
-    def __init__(self):
-        self.history = []
 
-    def add_message(self, role, message):
-        # self.history.append({"role": role, "message": message})
-        if role.lower()=='ai':
-            self.history.append({f"AI: {message}"})
-        else:
-            
-            self.history.append({f"USER: {message}"})
-    def get_history(self):
-        return self.history
-
-
-
-history = ChatHistory()
 
 
 classification_template = PromptTemplate.from_template(
@@ -92,54 +78,46 @@ classification_template = PromptTemplate.from_template(
 )
 
 #### rephraser####
-template_rephrase = """
-Based on the chat history and schema below , rephrase the user's question to provide more context and clarity:
+rephraser_prompt = ChatPromptTemplate.from_template(
+    """
+    rephrase the question, NEVER CHANGE THE MEANING OF USER INPUT
+    Rule:
+    - it if it is like greetings like, 'hi', 'hello', or good by types sentence like "thats all" , "that all", "thank you", "thanks", "thank you so much", "thank you so much for your service", "thats all" then the rephrased question is will be as it is ( Do not change the question, keep that as it is).
+    - Do not add any question mark at the end of the rephrased question
+    - Your task is to rephrase the question, NEVER CHANGE THE MEANING OF USER INPUT
+    Question: {question}
+    Conversation history: {history}
 
-Chat history: {history}
-Schema: {schema}
-Original Question: {question}
-Rephrased Question:
+    Rephrase question:
 """
-prompt_rephrase = ChatPromptTemplate.from_template(template_rephrase)
-
-def get_rephrased_question_chain(history):
-    return (
-        RunnablePassthrough.assign(
-            history=lambda _: history,
-            schema=get_schema,
-            question=itemgetter("question")
-        )
-        | prompt_rephrase
-        | model
-        | StrOutputParser()
-    )
+)
+model = ChatOpenAI(model="gpt-3.5-turbo",temperature=0.131)
+rephraser_chain = rephraser_prompt | model | StrOutputParser()
 classification_chain = classification_template | ChatOpenAI() | StrOutputParser()
 
+history =[]
 def Ai_response(user_question):
     # rephraser = get_general_chat_chain(history)
-    rephrased_question = user_question;
+    rephrased_question = rephraser_chain.invoke({"question":user_question,"history":history})
+  
     x_class = classification_chain.invoke({"question":rephrased_question})
     x_class=str(x_class)
     
     print("CLASS: ",x_class)
     print("Rephrased question: ",rephrased_question)
-    print(history.history)
-
+    
 
     if x_class.lower() == 'database':
-        sql_gen=get_sql_query_generator(history)
-        natual_response_gen=get_natural_response(history)
-        sql_query = sql_gen.invoke({"question":rephrased_question})
-        sql_response = run_query(sql_query)
-        ai_response = natual_response_gen.invoke({ "question": rephrased_question, "query": sql_query,"response":sql_response}) 
+        ai_response = sql_response(user_question,history)
     else:
-       
-        gen_chat = get_general_chat_chain(history)
-        ai_response = gen_chat.invoke({'question': user_question})
+        ai_response = c_response(rephrased_question)
         
-    history.add_message('AI', ai_response)
-    history.add_message('USER', user_question)
     
-    
+    history.append(HumanMessage(content=rephrased_question))
+    history.append(AIMessage(content=ai_response))
+
+    while(len(history)//2 >= 3):
+        history.pop(0)
+        history.pop(0)
 
     return ai_response

@@ -26,7 +26,7 @@ def handle_input():
     question = st.session_state["new_question"]
     if question:
         answer = send_query(question)
-        st.session_state.history.append(("👤", question))
+        st.session_state.history.append(("🟢", question))
         st.session_state.history.append(("🤖", answer))
         # Clear the input field
         st.session_state["new_question"] = ""
@@ -35,7 +35,7 @@ def handle_input():
 st.markdown("""
     <style>
         .user-message {
-            background-color: #1E3A8A;
+            background-color: #45214A;
             color: white;
             padding: 10px;
             border-radius: 5px;
@@ -59,10 +59,12 @@ st.markdown("""
 
 # Display chat history
 for sender, message in st.session_state.history:
-    if sender == "You":
-        st.markdown(f"<div class='user-message' style='background-color: powderblue'  ><b>{sender} </b> {message}</div>", unsafe_allow_html=True)
+    if sender == "🟢":
+        st.markdown(f"<div class='user-message'><b>{sender} </b> {message}</div>", unsafe_allow_html=True)
     else:
         st.markdown(f"<div class='bot-message'><b>{sender} </b> {message}</div>", unsafe_allow_html=True)
 
 # User input
 st.text_input("You:", key="new_question", on_change=handle_input)
+
+

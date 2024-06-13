@@ -20,7 +20,7 @@ CHATBOT/
 │ └── Warranty.pdf
 ├──- models/
 │ ├── dataprocessor.py
-│ ├── get_from_chromaDB.py
+│ ├── get_from_chromaDB_and_general_Chat.py
 │ ├── get_from_mysqlDB.py
 │ ├── scraper1.py
 │ ├── scraper2.py
@@ -42,7 +42,7 @@ CHATBOT/
 
 3. Run the FastAPI:
     ```bash
-    uvicorn main:app --reload
+    fastapi dev .\app\main:app --reload
     ```
 
 4. Run the Streamlit frontend:
