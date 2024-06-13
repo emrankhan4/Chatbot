@@ -11,7 +11,7 @@ class Query(BaseModel):
 
 @app.get("/")
 def read_root():
-    return {"Assalamualaikum": "People! please visit localhost:8000/docs"}
+    return {"This is Nikles's Chatbot": " visit localhost:8000/docs"}
 
 @app.post("/ask")
 # async def ask_question(query):
